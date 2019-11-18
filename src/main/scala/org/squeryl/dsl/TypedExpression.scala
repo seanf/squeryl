@@ -61,6 +61,9 @@ sealed trait TOptionEnumValue[A] extends TEnumValue[A]
 
 sealed trait TString extends TOptionString with TNonOption
 sealed trait TDate extends TOptionDate with TNonOption
+sealed trait TLocalDate extends TOptionLocalDate with TNonOption
+sealed trait TLocalDateTime extends TOptionLocalDateTime with TNonOption
+sealed trait TZonedDateTime extends TOptionZonedDateTime with TNonOption
 sealed trait TTimestamp extends TOptionTimestamp with TNonOption
 sealed trait TByteArray extends TOptionByteArray  with TNonOption
 sealed trait TIntArray extends TOptionIntArray  with TNonOption
@@ -69,6 +72,9 @@ sealed trait TDoubleArray extends TOptionDoubleArray  with TNonOption
 sealed trait TStringArray extends TOptionStringArray  with TNonOption
 sealed trait TOptionString 
 sealed trait TOptionDate
+sealed trait TOptionLocalDate
+sealed trait TOptionLocalDateTime
+sealed trait TOptionZonedDateTime
 sealed trait TOptionTimestamp
 sealed trait TOptionByteArray  
 sealed trait TOptionIntArray  

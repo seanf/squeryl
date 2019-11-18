@@ -18,8 +18,10 @@ package org.squeryl
 
 import dsl.ast._
 import dsl._
-import java.util.{ Date, UUID }
+import java.util.{Date, UUID}
 import java.sql.Timestamp
+import java.time.{LocalDate, LocalDateTime, ZonedDateTime}
+
 import org.squeryl.internals.FieldMapper
 
 @deprecated("the PrimitiveTypeMode companion object is deprecated, you should define a mix in the trait for your application. See : http://squeryl.org/0.9.6.html",
@@ -38,6 +40,12 @@ trait PrimitiveTypeMode extends QueryDsl with FieldMapper {
   implicit val optionDateTEF = PrimitiveTypeSupport.optionDateTEF
   implicit val sqlDateTEF = PrimitiveTypeSupport.sqlDateTEF
   implicit val optionSqlDateTEF = PrimitiveTypeSupport.optionSqlDateTEF
+  implicit val localDateTEF = PrimitiveTypeSupport.localDateTEF
+  implicit val optionLocalDateTEF = PrimitiveTypeSupport.optionLocalDateTEF
+  implicit val localDateTimeTEF = PrimitiveTypeSupport.localDateTimeTEF
+  implicit val optionLocalDateTimeTEF = PrimitiveTypeSupport.optionLocalDateTimeTEF
+  implicit val zonedDateTimeTEF = PrimitiveTypeSupport.zonedDateTimeTEF
+  implicit val optionZonedDateTimeTEF = PrimitiveTypeSupport.optionZonedDateTimeTEF
   implicit val timestampTEF = PrimitiveTypeSupport.timestampTEF
   implicit val optionTimestampTEF = PrimitiveTypeSupport.optionTimestampTEF
   implicit val doubleArrayTEF = PrimitiveTypeSupport.doubleArrayTEF
@@ -67,6 +75,15 @@ trait PrimitiveTypeMode extends QueryDsl with FieldMapper {
 
   implicit def dateToTE(s: Date) = dateTEF.create(s)
   implicit def optionDateToTE(s: Option[Date]) = optionDateTEF.create(s)
+
+  implicit def localDateToTE(s: LocalDate) = localDateTEF.create(s)
+  implicit def optionLocalDateToTE(s: Option[LocalDate]) = optionLocalDateTEF.create(s)
+
+  implicit def localDateTimeToTE(s: LocalDateTime) = localDateTimeTEF.create(s)
+  implicit def optionLocalDateTimeToTE(s: Option[LocalDateTime]) = optionLocalDateTimeTEF.create(s)
+
+  implicit def zonedDateTimeToTE(s: ZonedDateTime) = zonedDateTimeTEF.create(s)
+  implicit def optionZonedDateTimeToTE(s: Option[ZonedDateTime]) = optionZonedDateTimeTEF.create(s)
 
   implicit def timestampToTE(s: Timestamp) = timestampTEF.create(s)
   implicit def optionTimestampToTE(s: Option[Timestamp]) = optionTimestampTEF.create(s)

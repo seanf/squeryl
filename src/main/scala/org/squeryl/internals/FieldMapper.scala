@@ -19,8 +19,10 @@ package org.squeryl.internals
 import scala.collection.mutable.HashMap
 import java.sql.ResultSet
 import java.sql.Timestamp
+import java.time.{LocalDate, LocalDateTime, ZoneOffset, ZonedDateTime}
 import java.util.Date
 import java.util.UUID
+
 import org.squeryl.dsl._
 import org.squeryl.dsl.ArrayJdbcMapper
 
@@ -78,6 +80,39 @@ trait FieldMapper {
     val optionTimestampTEF = new TypedExpressionFactory[Option[Timestamp],TOptionTimestamp] with DeOptionizer[Timestamp, Timestamp, TTimestamp, Option[Timestamp], TOptionTimestamp] {
       val deOptionizer = timestampTEF
     }
+
+    val localDateTEF =
+      new TypedExpressionFactory[LocalDate,TLocalDate] with PrimitiveJdbcMapper[LocalDate] {
+        val sample = LocalDate.now()
+        val defaultColumnLength = -1
+        def extractNativeJdbcValue(rs: ResultSet, i: Int) = rs.getObject(i, classOf[LocalDate])
+      }
+    val optionLocalDateTEF =
+      new TypedExpressionFactory[Option[LocalDate],TOptionLocalDate] with DeOptionizer[LocalDate, LocalDate, TLocalDate, Option[LocalDate], TOptionLocalDate] {
+        val deOptionizer = localDateTEF
+      }
+
+    val localDateTimeTEF =
+      new TypedExpressionFactory[LocalDateTime,TLocalDateTime] with PrimitiveJdbcMapper[LocalDateTime] {
+        val sample = LocalDateTime.now()
+        val defaultColumnLength = -1
+        def extractNativeJdbcValue(rs: ResultSet, i: Int) = rs.getObject(i, classOf[LocalDateTime])
+      }
+    val optionLocalDateTimeTEF =
+      new TypedExpressionFactory[Option[LocalDateTime],TOptionLocalDateTime] with DeOptionizer[LocalDateTime, LocalDateTime, TLocalDateTime, Option[LocalDateTime], TOptionLocalDateTime] {
+        val deOptionizer = localDateTimeTEF
+      }
+
+    val zonedDateTimeTEF =
+      new TypedExpressionFactory[ZonedDateTime,TZonedDateTime] with PrimitiveJdbcMapper[ZonedDateTime] {
+        val sample = ZonedDateTime.now(ZoneOffset.UTC)
+        val defaultColumnLength = -1
+        def extractNativeJdbcValue(rs: ResultSet, i: Int) = rs.getObject(i, classOf[ZonedDateTime])
+      }
+    val optionZonedDateTimeTEF =
+      new TypedExpressionFactory[Option[ZonedDateTime],TOptionZonedDateTime] with DeOptionizer[ZonedDateTime, ZonedDateTime, TZonedDateTime, Option[ZonedDateTime], TOptionZonedDateTime] {
+        val deOptionizer = zonedDateTimeTEF
+      }
     
     val booleanTEF = new TypedExpressionFactory[Boolean,TBoolean] with PrimitiveJdbcMapper[Boolean] {
       val sample = true
@@ -267,6 +302,9 @@ trait FieldMapper {
     register(timestampTEF)
     register(dateTEF)
     register(sqlDateTEF)
+    register(localDateTEF)
+    register(localDateTimeTEF)
+    register(zonedDateTimeTEF)
     register(uuidTEF)
     register(intArrayTEF)
     register(longArrayTEF)
