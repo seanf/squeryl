@@ -196,6 +196,9 @@ trait QueryDsl
          
   implicit val numericComparisonEvidence   = new CanCompare[TNumeric, TNumeric]         
   implicit val dateComparisonEvidence      = new CanCompare[TOptionDate, TOptionDate]
+  implicit val localDateComparisonEvidence     = new CanCompare[TOptionLocalDate, TOptionLocalDate]
+  implicit val localDateTimeComparisonEvidence = new CanCompare[TOptionLocalDateTime, TOptionLocalDateTime]
+  implicit val zonedDateTimeComparisonEvidence = new CanCompare[TOptionZonedDateTime, TOptionZonedDateTime]
   implicit val timestampComparisonEvidence = new CanCompare[TOptionTimestamp, TOptionTimestamp]
   implicit val stringComparisonEvidence    = new CanCompare[TOptionString, TOptionString]
   implicit val booleanComparisonEvidence   = new CanCompare[TOptionBoolean, TOptionBoolean]

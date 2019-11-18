@@ -21,6 +21,7 @@ import org.squeryl._
 import dsl.CompositeKey
 import org.squeryl.{Schema, Session, Table}
 import java.sql._
+import java.time.{LocalDate, LocalDateTime, ZonedDateTime}
 import java.util.UUID
 
 trait DatabaseAdapter {
@@ -216,6 +217,7 @@ trait DatabaseAdapter {
   def bigDecimalTypeDeclaration = "decimal"
   def bigDecimalTypeDeclaration(precision:Int, scale:Int) = "decimal(" + precision + "," + scale + ")"
   def timestampTypeDeclaration = "timestamp"
+  def timestamptzTypeDeclaration = "timestamp with time zone"
   def binaryTypeDeclaration = "binary"
   def uuidTypeDeclaration = "char(36)"
   def intArrayTypeDeclaration = intTypeDeclaration + "[]"
@@ -868,9 +870,12 @@ trait DatabaseAdapter {
         intTypeDeclaration
       else if(classOf[String].isAssignableFrom(c))
         stringTypeDeclaration                  
-      else if(ar.isInstanceOf[java.sql.Timestamp])
-        timestampTypeDeclaration                  
-      else if(ar.isInstanceOf[java.util.Date])
+      // TODO mappings for LocalDateTime and ZonedDateTime are probably wrong for some or all DBs
+      else if(ar.isInstanceOf[java.sql.Timestamp] || ar.isInstanceOf[LocalDateTime])
+        timestampTypeDeclaration
+      else if(ar.isInstanceOf[ZonedDateTime])
+        timestamptzTypeDeclaration
+      else if(ar.isInstanceOf[java.util.Date] || ar.isInstanceOf[LocalDate])
         dateTypeDeclaration
       else if(ar.isInstanceOf[java.lang.Integer])
         intTypeDeclaration
